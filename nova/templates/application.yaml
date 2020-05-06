@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ template "nova.fullname" . }}-ns
+spec:
+  finalizers:
+  - kubernetes
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "nova.fullname" . }}-dpl
+  namespace: {{ template "nova.fullname" . }}-ns
+  labels:
+    app: {{ template "nova.fullname" . }}-nvc
+    deployment: {{ template "nova.fullname" . }}-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: {{ template "nova.fullname" . }}-nvc
+      deployment: {{ template "nova.fullname" . }}-dpl
+  template:
+    metadata:
+      labels:
+        app: {{ template "nova.fullname" . }}-nvc
+        deployment: {{ template "nova.fullname" . }}-dpl
+    spec:
+      containers:
+      - name: {{ template "nova.fullname" . }}-nvc
+        env:
+        - name: NODE_ID
+          value: {{ .Values.node_id }}
+        - name: NODE_KEY
+          value: {{ .Values.node_key }}
+        - name: NODE_HOST
+          value: {{ .Values.host }}
+        image: novaadc/nova-client:latest
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+          procMount: Default
+          capabilities:
+            add:
+            - NET_ADMIN
+        resources: {}
+        ports:
+        {{- range $key, $val := .Values.deployment_port_map }}
+        - containerPort: {{ $val.containerPort }}
+          protocol: {{ $val.protocol }}
+        {{- end }}
+        resources:
+          limits:
+            cpu: 300m
+            memory: 2Gi
+          requests:
+            cpu: 200m
+            memory: 1Gi
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "nova.fullname" . }}-svc
+  namespace: {{ template "nova.fullname" . }}-ns
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  ports:
+  {{- range $key, $val := .Values.service_port_map }}
+  - name: {{ $val.name }}
+    port: {{ $val.port }}
+    targetPort: {{ $val.targetPort }}
+  {{- end }}
+  - name: novac
+    port: 1080
+    targetPort: 1080
+  selector:
+    app: {{ template "nova.fullname" . }}-nvc
+    deployment: {{ template "nova.fullname" . }}-dpl

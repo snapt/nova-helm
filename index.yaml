@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  nova:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-05-06T13:02:27.616989+02:00"
+    description: A Nova Node for Nova ADC
+    digest: 32daa0399633bb884320f2d266f4bd09af4e71479bcdeeaeae6939ad94d95b26
+    name: nova
+    type: application
+    urls:
+    - https://github.com/snapt/nova-helm/nova/nova-1.0.0.tgz
+    version: 1.0.0
+generated: "2020-05-06T13:02:27.615861+02:00"
