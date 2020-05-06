@@ -6,20 +6,21 @@ Refer to Pre-requisites and the sample nova.yaml.
 ```console
 $ helm repo add nova-helm https://snapt.github.io/nova-helm
 $ helm repo update
-$ helm -f <release_name> nova.yaml nova-helm/nova
+$ helm <release_name> -f nova.yaml nova-helm/nova
 ```
 
 ### Pre-requisites
 
-* Make a copy for the values.yaml file.
-* Create a node on https://nova.snapt.net
+* Make a copy for the nova.yaml file from the sample below.
+* Create a node on [Nova ADC](https://nova.snapt.net "Snapt Nova")
 * Obtain the ID and Key from the installation page for your node
-* Navigate to https://nova.snapt.net/nodes
+* Navigate to your list of nova nodes: [https://nova.snapt.net/nodes](https://nova.snapt.net/nodes)
 * On the Action button for your node, select "Install"
-* Enter the ID and Key into the node_id and node_key in the copy of the values.yaml file
+* Enter the ID and Key into the node_id and node_key in your copy of nova.yaml
 * Edit port mappings for the deployment and service as required.
 
 ## Contents
+
 3 Kubernetes elements are created
 * A Namespace following the following convention: $release_name-nova-ns
 * A Deployment with a single replica using the novaadc client container
@@ -27,7 +28,9 @@ $ helm -f <release_name> nova.yaml nova-helm/nova
 
 
 ## Sample nova.yaml
-Make use of the below as input during the installation step
+
+Make use of the below as input during the installation and pre-requisites step
+
 ```console
 replicaCount: 1
 
