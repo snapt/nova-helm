@@ -9,6 +9,6 @@ entries:
     name: nova
     type: application
     urls:
-    - https://github.com/snapt/nova-helm/nova/nova-1.0.0.tgz
+    - https://github.com/snapt/nova-helm/nova-1.0.0.tgz
     version: 1.0.0
 generated: "2020-05-06T13:02:27.615861+02:00"
