@@ -6,18 +6,16 @@ Refer to Pre-requisites and the sample nova.yaml.
 ```console
 $ helm repo add nova-helm https://snapt.github.io/nova-helm
 $ helm repo update
-$ helm <release_name> -f nova.yaml nova-helm/nova
+$ helm install <release_name> -f nova.yaml nova-helm/nova
 ```
 
 ### Pre-requisites
 
-* Make a copy for the nova.yaml file from the sample below.
-* Create a node on [Nova ADC](https://nova.snapt.net "Snapt Nova")
-* Obtain the ID and Key from the installation page for your node
-* Navigate to your list of nova nodes: [https://nova.snapt.net/nodes](https://nova.snapt.net/nodes)
-* On the Action button for your node, select "Install"
-* Enter the ID and Key into the node_id and node_key in your copy of nova.yaml
-* Edit port mappings for the deployment and service as required.
+ * Setup a Nova Node on https://nova.snapt.net
+   * Create a node on Nova ADC OR
+   * View the install instructions on an existing node (https://nova.snapt.net/nodes) by selecting the dropdown and selecting "Install"
+ * On the right pane you will find a nova.yaml file generated specifically for your node
+ * Edit port mappings for the deployment and service as required in the nova.yaml file.
 
 ## Contents
 
