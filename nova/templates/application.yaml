@@ -31,13 +31,13 @@ spec:
       containers:
       - name: {{ template "nova.fullname" . }}-nvc
         env:
-        - name: NODE_ID
-          value: {{ .Values.node_id }}
-        - name: NODE_KEY
-          value: {{ .Values.node_key }}
+        - name: NOVA_AUTO_CONF
+          value: {{ .Values.nova_auto_conf }}
+        - name: NOVA_AUTO_CONF_HOST
+          value: {{ .Values.nova_auto_conf_host }}
         - name: NODE_HOST
           value: {{ .Values.host }}
-        image: novaadc/nova-client:latest
+        image: novaadc/nova-client-aj:1.0.1
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -77,9 +77,6 @@ spec:
     port: {{ $val.port }}
     targetPort: {{ $val.targetPort }}
   {{- end }}
-  - name: novac
-    port: 1080
-    targetPort: 1080
   selector:
     app: {{ template "nova.fullname" . }}-nvc
     deployment: {{ template "nova.fullname" . }}-dpl
