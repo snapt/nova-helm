@@ -2,28 +2,41 @@
 Nova Helm Repo
 
 ## Installation
-Refer to Pre-requisites and the sample nova.yaml. 
+Refer to Pre-requisites and the sample nova.yaml. We will be making use of the AutoJoin node functionality of Nova. This enables the native scaling power of Kubernetes using replicasets.
+
 ```console
 $ helm repo add nova-helm https://snapt.github.io/nova-helm
 $ helm repo update
-$ helm install <release_name> -f nova.yaml nova-helm/nova
+$ helm <release_name> -f nova.yaml nova-helm/nova
 ```
 
 ### Pre-requisites
 
- * Setup a Nova Node on https://nova.snapt.net
-   * Create a node on Nova ADC OR
-   * View the install instructions on an existing node (https://nova.snapt.net/nodes) by selecting the dropdown and selecting "Install"
- * On the right pane you will find a nova.yaml file generated specifically for your node
- * Edit port mappings for the deployment and service as required in the nova.yaml file.
+* Make a copy for the nova.yaml file from the sample below or download from from [https://nova.snapt.net/nodes](https://nova.snapt.net/adcs/auto-join/keys)
+* If you copied the sample nova.yaml file, fetch your ADC AutoJoin Key from [AutoJoin](https://nova.snapt.net/adcs/auto-join/keys) and insert it as the 'nova_auto_conf' variable
+* Edit port mappings for the deployment and service as required. Only enable the ports you intend to use for your backend systems.
+
+> :warning: Enabling ports you don't plan on using immediately may cause issues on the load balancer service. Ports can be enabled later, so it's recommended to only enable active ports.
+
 
 ## Contents
 
 3 Kubernetes elements are created
-* A Namespace following the following convention: $release_name-nova-ns
+* A Namespace following the following convention: $release_name-ns
 * A Deployment with a single replica using the novaadc client container
+** From this a pod will be generated which is the Nova Node itself.
+** To scale your Nova Nodes up or down, simple increase or decrease the replicas
 * A Service with type LoadBalancer
 
+
+## Scaling Nova Nodes
+
+In order to take full advantage of the AutoJoin functionality of Nova Nodes, scaling up and down is as simple as setting the replicas.
+See below for an example of setting the nodes to 2 using native kubernetes scaling
+
+```console
+kubectl scale deployments/nova-dpl --replicas=2 -n nova-ns
+```
 
 ## Sample nova.yaml
 
@@ -33,7 +46,7 @@ Make use of the below as input during the installation and pre-requisites step
 replicaCount: 1
 
 image:
-  repository: novaadc/nova-client:latest
+  repository: novaadc/nova-client-aj:1.0.1
   tag: 0.1.0
   pullPolicy: IfNotPresent
 
@@ -42,28 +55,20 @@ serviceAccount:
   create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  
-node_id: <Refer to Pre-requisites>
-node_key: <Refer to Pre-requisites>
+
+nova_auto_conf: 'Insert your AutoJoin Key here'
+nova_auto_conf_host: 'nova.snapt.net'
 host: 'poll.nova-adc.com'
 
 deployment_port_map: # Port mappings for the kubernetes deployment
-  #port 1080 is used for Nova traffic
   port80:
     containerPort: 80
     protocol: TCP
-  port443:
-    containerPort: 443
-    protocol: TCP
+
 
 service_port_map: # Port mappings for the kubernetes service
-  #port 1080 is used for Nova traffic
-  port80:  # Map object
-    name: 'port80' # Name of the service port
-    port: 80 # Maps to the port value of the service
-    targetPort: 80 # Maps to the targetPort value of the service
-  port443:
-    name: 'port443'
-    port: 443
-    targetPort: 443
+  port80:
+    name: 'port80'
+    port: 80
+    targetPort: 80
 ```
