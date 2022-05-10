@@ -24,8 +24,8 @@ $ helm <release_name> -f nova.yaml nova-helm/nova
 3 Kubernetes elements are created
 * A Namespace following the following convention: $release_name-ns
 * A Deployment with a single replica using the novaadc client container
- * From this a pod will be generated which is the Nova Node itself.
- * To scale your Nova Nodes up or down, simple increase or decrease the replicas
+  * From this a pod will be generated which is the Nova Node itself.
+  * To scale your Nova Nodes up or down, simple increase or decrease the replicas
 * A Service with type LoadBalancer
 
 
@@ -51,22 +51,19 @@ image:
   pullPolicy: IfNotPresent
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
 
 nova_auto_conf: 'Insert your AutoJoin Key here'
 nova_auto_conf_host: 'nova.snapt.net'
 host: 'poll.nova-adc.com'
 
-deployment_port_map: # Port mappings for the kubernetes deployment
+deployment_port_map:
   port80:
     containerPort: 80
     protocol: TCP
 
 
-service_port_map: # Port mappings for the kubernetes service
+service_port_map:
   port80:
     name: 'port80'
     port: 80
