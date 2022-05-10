@@ -16,7 +16,7 @@ $ helm <release_name> -f nova.yaml nova-helm/nova
 * If you copied the sample nova.yaml file, fetch your ADC AutoJoin Key from [AutoJoin](https://nova.snapt.net/adcs/auto-join/keys) and insert it as the 'nova_auto_conf' variable
 * Edit port mappings for the deployment and service as required. Only enable the ports you intend to use for your backend systems.
 
-> :warning: Enabling ports you don't plan on using immediately may cause issues on the load balancer service. Ports can be enabled later, so it's recommended to only enable active ports.
+> WARNING: Enabling ports you don't plan on using immediately may cause issues on the load balancer service. Ports can be enabled later, so it's recommended to only enable active ports.
 
 
 ## Contents
@@ -24,8 +24,8 @@ $ helm <release_name> -f nova.yaml nova-helm/nova
 3 Kubernetes elements are created
 * A Namespace following the following convention: $release_name-ns
 * A Deployment with a single replica using the novaadc client container
-** From this a pod will be generated which is the Nova Node itself.
-** To scale your Nova Nodes up or down, simple increase or decrease the replicas
+ * From this a pod will be generated which is the Nova Node itself.
+ * To scale your Nova Nodes up or down, simple increase or decrease the replicas
 * A Service with type LoadBalancer
 
 
