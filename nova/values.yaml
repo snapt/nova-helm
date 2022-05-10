@@ -16,14 +16,15 @@ nova_auto_conf_host: 'nova.snapt.net'
 host: 'poll.nova-adc.com'
 
 deployment_port_map: # Port mappings for the kubernetes deployment
+# IMPORTANT: Only include required ports
   port80:
     containerPort: 80
     protocol: TCP
 
 
 service_port_map: # Port mappings for the kubernetes service
-# Only include the ports you are actively using to manage your traffic
-  port80:  # Map object
+# IMPORTANT: Only include required ports
+  port80:  
     name: 'port80' # Name of the service port
     port: 80 # Maps to the port value of the service
     targetPort: 80 # Maps to the targetPort value of the service
