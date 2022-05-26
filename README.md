@@ -46,7 +46,7 @@ Make use of the below as input during the installation and pre-requisites step
 replicaCount: 1
 
 image:
-  repository: novaadc/nova-client-aj:1.0.1
+  repository: novaadc/nova-client:latest
   tag: 0.1.0
   pullPolicy: IfNotPresent
 
