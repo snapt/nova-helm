@@ -9,7 +9,7 @@ entries:
     name: nova
     type: application
     urls:
-    - https://snapt.github.io/nova-helm/nova-1.0.1.tgz
+    - https://snapt.github.io/nova-helm/nova-1.0.2.tgz
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
