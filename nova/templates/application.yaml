@@ -37,7 +37,7 @@ spec:
           value: {{ .Values.nova_auto_conf_host }}
         - name: NODE_HOST
           value: {{ .Values.host }}
-        image: novaadc/nova-client-aj:1.0.1
+        image: {{ .Values.image.repository }}
         imagePullPolicy: Always
         securityContext:
           privileged: true
