@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: novaadc/nova-client-aj:1.0.1
+  repository: novaadc/nova-client:latest
   tag: 0.1.0
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 serviceAccount:
   # Specifies whether a service account should be created
